@@ -190,7 +190,7 @@ how_many_minutes = add_m % 60
 t_comeback_h = t_out_h + how_many_hours_add
 t_comeback_m = how_many_minutes
 
-print(f"{t_comeback_h}:{t_comeback_m}")
+print(f"{t_comeback_h}:{t_comeback_m:02d}")
 
 
 
