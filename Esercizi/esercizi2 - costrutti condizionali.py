@@ -3,7 +3,7 @@ from typing import Any, Callable, List
 import sys
 
 
-class bcolors:
+class bcolors: 
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -48,14 +48,49 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 # e calcola le radici dell'equazione `a x ^ 2 + b x + c` e ritorna la maggiore.
 # Se le radici sono complesse, la funzione restituisce una qualsiasi
 # delle due radici
+import cmath
 def root_max(a, b, c):
-    pass
+    delta = b**2-4*a*c
+    
+    sqrt1 = (-b+cmath.sqrt(delta))/2*a
+    sqrt2 = (-b-cmath.sqrt(delta))/2*a
+    
+    if isinstance(sqrt1, complex) and isinstance(sqrt2, complex):
+        return sqrt1
 
+    elif sqrt1 > sqrt2:
+        return sqrt1
+    
+    elif sqrt2 > sqrt1:
+        return sqrt2
+    
 
 # Scrivere una funzione che prende come input cinque numeri e ritorna la somma
 # dei numeri pari meno quella dei numeri dispari.
 def even_minus_odd(a, b, c, d, e):
-    pass
+    all = [a, b, c, d, e]
+    
+    pari = []
+    dispari = []
+    
+    for x in range(len(all)):
+        if all[x] % 2 == 0:
+            pari.append(all[x])
+            
+        if all[x] % 2 != 0:
+            dispari.append(all[x])
+            
+    sum_pari = 0
+    sum_dispari = 0
+    
+    for paro in pari:
+        sum_pari += paro
+        
+    for disparo in dispari:
+        sum_dispari += disparo
+        
+    total = sum_pari - sum_dispari
+    return total
 
 
 # Scrivere una funzione che prende tre valori di input, e ritorna la
@@ -63,14 +98,30 @@ def even_minus_odd(a, b, c, d, e):
 # e altrimenti ritorna `- 1`. Scriverne poi una variante che legge i valori da
 # terminale con `input`.
 def check_grade(a, b, c):
-    pass
+    grades = [a, b, c]
+    # Verifica che tutti i voti siano compresi tra 0 e 30
+    if all(0 <= g <= 30 for g in grades):
+        return sum(grades)
+    return -1
+            
+            
 
 
 # Scrivere una funzione che prende tre valori(`d`, `m`, `y`) e ritorna se la
 # data è valida o no. Si possono ignorare gli anni bisestili. Ad esempio,
 # ritorna `False` per `30/2/2017` e `True` per `1/1/1111`.
 def check_date(d, m, y):
-    pass
+    if y <= 0 or not(1<=m<=12):
+        return False
+    
+    days_in_months = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    return 1 <= d <= days_in_months[m]
+            
+        
+        
+            
+    
 
 
 # Test funzioni
