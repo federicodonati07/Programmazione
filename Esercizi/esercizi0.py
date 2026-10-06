@@ -92,17 +92,23 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 m = 42
 s = 42
 
-tot = (m*60)+s
+s_in_m = 60 
+m_in_s = m*s_in_m
+
+tot = m_in_s+s
 print(tot)
+
+
 
 
 # %% Calcoli: miglia
 # Scrivete una espressione che calcoli il numero di miglia che ci sono in
 # 10 chilometri. (1 miglio=1.61 km).
+conversione = 1.61
+
 km = 10
-km_in_miles = 1.6
-miles = km/km_in_miles
-print(miles)
+m_in_km = km/conversione
+print(m_in_km)
 
 
 
@@ -110,22 +116,27 @@ print(miles)
 # Scrivete una espressione che calcoli la velocità media e la cadenza media
 # (tempo per miglio, in minuti e secondi) di un corridore che corre una gara
 # di 10 chilometri in 42 minuti e 42 secondi.
-km = 10
-m = 42
-s = 42
-t_in_h = (m/60)+(s/3600)
-t_in_s = (m*60)+s
+lunghezza = 10
+tempoM = 42
+tempoS = 42
+conversione = 60
 
-km_in_miles = 1.6
-miles = km / km_in_miles
+tempoInS = (tempoM*conversione)+tempoS
 
-avg_speed = km/t_in_h
+vMedia = lunghezza/tempoInS
+print(vMedia*3600)
 
-pace_in_s = t_in_s / miles 
-pace_in_m = pace_in_s // 60
-pace_s = pace_in_s % 60
-print(pace_in_m)
-print(pace_s)
+miglia = lunghezza/1.61
+
+# dv = ds/dt -> dt = ds/dv
+tempoPerMiglio = tempoInS / miglia
+
+minutiPerMiglio = int(tempoPerMiglio / 60)
+secondiPerMiglio = int(tempoPerMiglio % 60) 
+
+print(minutiPerMiglio, secondiPerMiglio)
+
+
 
 # %% Calcoli: volume della sfera
 # Il volume di una sfera di raggio `r` è `4/3 * PI * r ^ 3`.
@@ -133,7 +144,7 @@ print(pace_s)
 import math
 r = 5
 
-volume = (4*math.pi*r**3)/4
+volume = (4*math.pi*r**3)/3
 print(volume)
 
 
@@ -144,20 +155,24 @@ print(volume)
 
 price = 24.95
 promo = 40
-pprice = price - ((price*promo)/100)
+fcopy = 3
+ocopy = 0.75
 
+newPrice = price-(price*promo)/100
+
+copy = 60
 tot = 0
-cumulative = 0
 
-for i in range(0, 60):
-    if(i == 0):
-        tot = pprice+3
-        cumulative += tot
+
+for x in range(0, copy):
+    if(x == 0):
+        tot += newPrice+fcopy
+
     else:
-        tot = pprice + 0.75
-        cumulative += tot
+        tot += newPrice+ocopy
+        
+print(tot)
 
-print(tot, cumulative)
 
 
 # %% Calcoli: orario di rientro
@@ -165,32 +180,34 @@ print(tot, cumulative)
 # (8 minuti e 15 secondi al miglio), e poi 3 miglia a ritmo moderato
 # (7 minuti e 12 secondi al miglio), e infine un altro miglio a ritmo blando
 # (9 minuti e 45 secondi al miglio), a che ora sarete tornati a casa?
-t_out_h = 6
-t_out_m = 52
+
+outHour = 6
+outMin = 52
+
+pace1 = 8*60+15
+manyMpace1 = 1
+
+pace2 = 7*60+12
+manyMpace2 = 3
+
+pace3 = 9*60+15
+manyMpace3 = 1
+
+totOutInS = (pace1*manyMpace1) + (pace2*manyMpace2) + (pace3*manyMpace3)
+totOutInM = int(totOutInS/60)
+
+shiftHour = (outMin+totOutInM)//60
+returnH = outHour+shiftHour
+returnM = (outMin+totOutInM)%60
+
+print(f"{returnH}:{returnM:02d}")
 
 
 
-btime_s = (8*60)+15
-m_per_b = 1
-
-mtime_s = (7*60)+12
-m_per_m = (3)
-
-bbtime_s = (9*60)+45
-m_per_bb = 1
-
-tot_out_time_in_s = (btime_s * m_per_b) + (mtime_s * m_per_m) + (bbtime_s * m_per_bb)
-tot_out_time_in_m = tot_out_time_in_s // 60
-
-add_m = tot_out_time_in_m + t_out_m
-how_many_hours_add = add_m//60
-how_many_minutes = add_m % 60
 
 
-t_comeback_h = t_out_h + how_many_hours_add
-t_comeback_m = how_many_minutes
 
-print(f"{t_comeback_h}:{t_comeback_m:02d}")
+
 
 
 
@@ -199,11 +216,13 @@ print(f"{t_comeback_h}:{t_comeback_m:02d}")
 # Scrivere una funzione che prende un numero in virgola mobile, ne calcola la
 # radice cubica, e la ritorna.
 
+import math
 def cubic_root(n):
-    if n >= 0:
-        return n ** (1/3)
+    if(n >= 0):
+        return math.pow(n, 1/3)
+    
     else:
-        return -((-n) ** (1/3))
+        return math.pow(-n, 1/3)
 
 check_test(cubic_root, 2.0, 8)
 print_test(cubic_root, -1)
@@ -215,11 +234,12 @@ print_test(cubic_root, -1)
 
 import cmath
 def roots(a, b, c):
-    delta = (b**2)-(4*a*c)
-    fsqrt = (-b + cmath.sqrt(delta))/(2*a)
-    ssqrt = (-b - cmath.sqrt(delta))/(2*a)
-
-    return(fsqrt, ssqrt)
+    delta = b**2-4*a*c
+    
+    fsqrt = (-b+cmath.sqrt(delta))/2*a
+    ssqrt = (-b-cmath.sqrt(delta))/2*a
+    
+    return fsqrt, ssqrt
 
 
 
@@ -242,13 +262,16 @@ print_test(print_hello)
 # Avete una stringa di 5 caratteri. Ogni carattere è una cifra decimale.
 # Ad esempio, `s = "85721"`. Stampate la somma delle cifre contenute nella stringa.
 def dec_str_to_dec(s):
+    s = list(s)
     s = [int(x) for x in s]
-
-    sum = 0
-    for i in range(len(s)):
-        sum += s[i]
-
-    print(sum)
+    
+    somma = 0
+    for i in s:
+        somma += i
+        
+    print(somma)
+    
+    
 
 
 print("Risultato di dec_str_to_dec: ", end="")
@@ -260,7 +283,9 @@ dec_str_to_dec("85721")
 # rappresentante un numero binario, stampi la sua rappresentazione decimale.
 # Ad esempio, `s = "00101" -> 5`.
 def bin_str_to_dec(s):
-    return(int(s, 2))
+    s = int(s, 2)
+    
+    print(s)
 
 
 print("Risultato di bin_str_to_dec: ", end="")
