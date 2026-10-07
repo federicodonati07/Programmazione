@@ -48,21 +48,21 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 # e calcola le radici dell'equazione `a x ^ 2 + b x + c` e ritorna la maggiore.
 # Se le radici sono complesse, la funzione restituisce una qualsiasi
 # delle due radici
+import math
 import cmath
 def root_max(a, b, c):
+    a = float(a)
+    b = float(b)
+    c = float(c)
     delta = b**2-4*a*c
     
-    sqrt1 = (-b+cmath.sqrt(delta))/2*a
-    sqrt2 = (-b-cmath.sqrt(delta))/2*a
-    
-    if isinstance(sqrt1, complex) and isinstance(sqrt2, complex):
-        return sqrt1
-
-    elif sqrt1 > sqrt2:
-        return sqrt1
-    
-    elif sqrt2 > sqrt1:
-        return sqrt2
+    if(delta < 0):
+        return (-b+cmath.sqrt(delta))/(2*a)
+    else:
+        sqrt1 = (-b + math.sqrt(delta)) / (2 * a)
+        sqrt2 = (-b - math.sqrt(delta)) / (2 * a)
+        
+        return(max(sqrt1, sqrt2))
     
 
 # Scrivere una funzione che prende come input cinque numeri e ritorna la somma
