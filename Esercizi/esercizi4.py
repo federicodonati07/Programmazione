@@ -35,15 +35,20 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 # che rimuove spazi all'inizio e alla fine della stringa.
 # Usare solo costrutti del linguaggio e non librerie.
 def strip_whitespace(string: str) -> str:
-    string = list(string)
-    strip_string = []
+    start = 0
+    end = len(string) -1
     
-    for x in string:
-        if(x != " "):
-            strip_string.append(x)
-            
-    output =  "".join(strip_string)
-    return output
+    
+    if not string or string.isspace():
+        return ""
+    
+    while string[start] == " ":
+        start += 1
+        
+    while string[end] == " ":
+        end -= 1
+
+    return string[start:end +1]
             
 
 
@@ -51,23 +56,22 @@ def strip_whitespace(string: str) -> str:
 # rimuovendo uno dei caratteri presi in input. Non ritornare stringhe vuote.
 # Usare solo costrutti del linguaggio e non librerie.
 def split_string(string: str, characters: str = '') -> List[str]:
-    result_list = []
-    current_word = ""
+    result = []
+    currentWord = ""
     
     for char in string:
         if char in characters:
-            if current_word != "":
-                result_list.append(current_word)
-                current_word = ""
+            if currentWord != "":
+                result.append(currentWord)
+                currentWord = ""
                 
         else:
-            current_word += char
-            
+            currentWord += char
     
-    if current_word != "":
-        result_list.append(current_word)
+    if currentWord != "":
+        result.append(currentWord)     
         
-    return result_list
+    return result           
     
 
     
@@ -75,23 +79,22 @@ def split_string(string: str, characters: str = '') -> List[str]:
 # Scrivere una funziona che si comporta come `str.replace()`.
 # Usare solo costrutti del linguaggio e non librerie.
 def replace_substring(string: str, find: str, replace: str) -> str:
-    
+    leng = len(find)
     output = ""
     
     i = 0
-    len_find = len(find)
-    
     while i < len(string):
-        if(string[i:i+len_find] == find):
+        if string[i:i+leng] == find:
             output += replace
-            i += len_find
+            
+            i += leng
             
         else:
-            output += string[i]
-            i += 1
-    
-    return output
+            output += string[i]    
+            i+=1
+        
 
+    return output
 
 # Scrivere una funzione che codifica un messaggio con il cifrario di
 # Cesare, che sostituisce ad ogni carattere il carattere che si
@@ -102,10 +105,9 @@ def replace_substring(string: str, find: str, replace: str) -> str:
 # fatto delle sole lettere dell'alfabeto inglese e spazi che non sono crittati.
 # Suggerimento: Sono utili le funzioni `ord()` e `chr()`.
 def caesar_cypher(string: str, offset: int, decrypt: bool = False) -> str:
-    
     offset = -offset if decrypt else offset
-    output = []
     
+    output = []
     
     for char in string:
         if 'a'<=char<='z':
@@ -119,7 +121,9 @@ def caesar_cypher(string: str, offset: int, decrypt: bool = False) -> str:
             output.append(char)
             
     return "".join(output)
-    
+            
+
+
     
             
             
@@ -141,50 +145,49 @@ def caesar_cypher(string: str, offset: int, decrypt: bool = False) -> str:
 #   o se viola una delle regole specificate.
 # La funzione restituisce true/false a seconda se la password sia valida o meno.
 def check_pwd(pwd: str) -> bool:
-    simbolil = ["$", "#", "@"]        
     
-    if not 6 <= len(pwd) <= 16:
+    if not 6<=len(pwd)<=16:
         return False
     
-    minuscole = any(c.islower() for c in pwd)
-    maiuscole = any(c.isupper() for c in pwd)
-    numeri = any(c.isdigit() for c in pwd)
-    simboli = any(c in simbolil for c in pwd)
+    have_letters_lower = any(char.islower() for char in pwd)
+    have_letters_upper = any(char.isupper() for char in pwd)
+    have_numbers = any(char.isdigit() for char in pwd)
+    have_symbols = any(char in "$#@" for char in pwd)
     
-    non_autorizzati = any(not (c.islower() or c.isupper() or c.isdigit() or c in simbolil) for c in pwd)
-    
-    return minuscole and maiuscole and numeri and simboli and not non_autorizzati
+    do_not_have_any = any(not(char.islower() or char.isupper() or char.isdigit() or char in "$#@") for char in pwd)
+    return have_letters_lower and have_letters_upper and have_numbers and have_symbols and not do_not_have_any
+
+
 
 # Scrivere una funzione che converte una stringa di caratteri numerici
 # nell'intero corrispondente. Non usare la funzione `int(string)`.
 def string_to_int(string: str) -> int:
+    negative = False
     
-    negativo = False
-    
-    if(string[0] == "-"):
-        negativo = True
+    if string[0] == "-":
+        negative = True
         string = string[1:]
-    
-    elif(string[0] == "+"):
+        
+    elif string[0] == "+":
         string = string[1:]
-    
+        
     else:
         string = string[0:]
         
-    numero = 0
-    
+    number = 0
     for c in string:
-        cifra = ord(c)-ord('0')
-
-        numero = numero * 10 + cifra
-
-    return -numero if negativo else numero  
+        cipher = ord(c)-ord('0')
+        
+        number = number * 10 + cipher
+        
+    return -number if negative else number
 
 
 # Scrivere una funzione che converte un intero in una stringa di caratteri
 # numerici corrispondenti all'intero. Non usare la funzione `str(integer)`.
 def int_to_string(integer: int) -> str:
     return f"{integer}"
+
 
 
 # Test funzioni
