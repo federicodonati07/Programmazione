@@ -12,9 +12,9 @@ Per ottenere il punteggio esegui il file grade.py contenuto nella cartella.
 Per superare la simulazione e' sufficiente ottenere un punteggio maggiore o uguale a 18.
 """
 
-nome = "NOME"
-cognome = "COGNOME"
-matricola = "MATRICOLA"
+nome = "Federico"
+cognome = "Donati"
+matricola = "2306212"
 
 ################################################################################
 ################################################################################
@@ -41,7 +41,31 @@ a_dict_exp = {'a':['beta','gamma'], 'b':['axle','zeta']}
 expected = 1
 '''
 def func1(a_dict: dict[str, list[str]], word: str) -> int:
-    pass
+    fchar = word[0].lower()
+    lchar = word[-1].lower()
+
+    element_count = 0
+
+    for key in a_dict:
+        for element in range(len(a_dict[key])):
+            inner_fchar = a_dict[key][element][0]
+            inner_lchar = a_dict[key][element][-1]
+            
+            
+            if inner_fchar == fchar and inner_lchar == lchar:
+                a_dict[key][element] = ""
+                element_count += 1
+                
+    for key in a_dict:
+        control_list = []
+        
+        for element in range(len(a_dict[key])):
+            if(a_dict[key][element] != ""):
+                control_list.append(a_dict[key][element])
+                
+        a_dict[key] = control_list
+    
+    return element_count
 
 
 # a_dict = {'a':['alpha','beta','gamma'], 'b':['axle','zeta']}
@@ -69,8 +93,20 @@ Esempio:
 dictionary = {4: ["a", "b", "c", "de", "fgh"], 2: ["a", "z", "b", "w"], 0: ["a", "b"]}
 expected = ['fgh', 'de', 'z', 'w', 'c', 'b', 'b', 'a', 'a']
 '''
-def func2(D: dict[int, list[str]]) -> list[str]:
-    pass
+def func2(D: dict[int, list[str]]) -> list[str]:    
+    if len(D) == 0:
+        return []
+    
+    list = []
+    
+    for key in D:
+        for i in range(len(D[key])):
+            if len(D[key][i]) < key:
+                list.append(D[key][i])
+
+    list.sort(key=lambda x: (len(x), x), reverse=True)
+
+    return list
 
 # D = {4: ["a", "b", "c", "de", "fgh"], 2: ["a", "z", "b", "w"], 0: ["a", "b"]}
 # print(func2(D)) # ['fgh', 'de', 'z', 'w', 'c', 'b', 'b', 'a', 'a']
@@ -90,7 +126,20 @@ a_list = ["monkey", "cat", "panda", "alligator"]
 expected = [4, 2, 2, 1]
 '''
 def func3(strList: list[str]) -> list[int]:
-    pass
+    vocali = ["a", "e", "i", "o", "u"]
+    count = []
+    
+    for element in strList:
+        rcount = 0
+        
+        for char in element:
+            if(any(char == vocale or char == vocale.upper() for vocale in vocali)):
+                rcount += 1
+                
+        count.append(rcount)
+        
+    count = sorted(count, reverse=True)
+    return count
 
 # a_list = ["monkey", "cat", "panda", "alligator"]
 # print(func3(a_list)) # [4, 2, 2, 1]
@@ -116,7 +165,17 @@ Esempio:
 
 '''
 def func4(string_list1: list[str], string_list2: list[str]) -> list[str]:
-    pass
+    
+    string_list1 = [word for word in string_list1 if word not in string_list2]
+    
+    string_list1.sort(key=lambda word: (len(set(word)), word))
+    
+    return string_list1
+    
+        
+    
+                
+    
 
 # string_list1 = ['shop', 'park', 'elichopter', 'cat', 'elephant']
 # string_list2 = ['ark', 'contact', 'hop', 'mark', 'shop', 'cat']
@@ -152,8 +211,18 @@ Esempio:
     expected = (2, 5)
 '''
 def func5(points: list[tuple[int, int]]) -> tuple[float, float]:
-    pass
+    points.sort(key=lambda x: x[1], reverse=True)
+    points = points[:3]
 
+    my = points[1][1]
+    my = round(my, 3)
+    
+    mx = [x[0] for x in points]
+    mx.sort()
+    mx = round(mx[1], 3)
+    
+    
+    return (mx, my)
 # points = [(1, 5), (3, 2), (4, 5), (5, 1), (2, 4)]
 # print(func5(points)) # (2, 5)
 
@@ -177,8 +246,22 @@ text = 'sOtto lA panca La caPra Canta Sopra LA Panca La CaPra crepa'
 expected   = {'s': 2, 't': 3, 'l': 4, 'p': 6, 'n': 3, 'c': 6, 'r': 4}
 '''
 def func6(text: str) -> dict[str, int]:
-    pass
+    vocali = ["a", "e", "i", "o", "u"]
+    
+    text = text.lower()
+    stext = set(text)
+    
+    ntext = [char for char in stext if char.isalpha() and char not in vocali]
 
+    dict = {char: 0 for char in ntext}
+    
+    for i in range(len(text)):            
+        for key in dict:
+            if text[i] == key:
+                dict[key] += 1
+        
+
+    return dict
 
 #text = 'sOtto lA panca La caPra Canta Sopra LA Panca La CaPra crepa'
 #print(func6(text)) # {'s': 2, 't': 3, 'l': 4, 'p': 6, 'n': 3, 'c': 6, 'r': 4}
