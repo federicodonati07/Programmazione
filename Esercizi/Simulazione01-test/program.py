@@ -41,31 +41,41 @@ a_dict_exp = {'a':['beta','gamma'], 'b':['axle','zeta']}
 expected = 1
 '''
 def func1(a_dict: dict[str, list[str]], word: str) -> int:
-    fchar = word[0].lower()
-    lchar = word[-1].lower()
-
-    element_count = 0
-
-    for key in a_dict:
-        for element in range(len(a_dict[key])):
-            inner_fchar = a_dict[key][element][0]
-            inner_lchar = a_dict[key][element][-1]
-            
-            
-            if inner_fchar == fchar and inner_lchar == lchar:
-                a_dict[key][element] = ""
-                element_count += 1
-                
-    for key in a_dict:
-        control_list = []
-        
-        for element in range(len(a_dict[key])):
-            if(a_dict[key][element] != ""):
-                control_list.append(a_dict[key][element])
-                
-        a_dict[key] = control_list
+    fChar = word[0].lower()
+    lChar = word[-1].lower()
     
-    return element_count
+    counter = 0
+
+    for key in a_dict:
+        for i in range(len(a_dict[key])):
+            element = a_dict[key][i]
+            
+            if element[0].lower() == fChar and element[-1].lower() == lChar:
+                counter += 1
+                a_dict[key][i] = ""
+      
+    ndict = {key: 0 for key in a_dict}
+    
+    
+    for key in a_dict:
+        nlist = []
+        for element in a_dict[key]:
+            if element != "":
+                nlist.append(element)
+                
+        ndict[key] = nlist
+        
+    a_dict.clear()
+    a_dict.update(ndict)
+    
+    return counter
+                
+       
+
+        
+    
+                
+                
 
 
 # a_dict = {'a':['alpha','beta','gamma'], 'b':['axle','zeta']}
@@ -94,19 +104,18 @@ dictionary = {4: ["a", "b", "c", "de", "fgh"], 2: ["a", "z", "b", "w"], 0: ["a",
 expected = ['fgh', 'de', 'z', 'w', 'c', 'b', 'b', 'a', 'a']
 '''
 def func2(D: dict[int, list[str]]) -> list[str]:    
-    if len(D) == 0:
-        return []
     
-    list = []
+    W = []
     
     for key in D:
         for i in range(len(D[key])):
             if len(D[key][i]) < key:
-                list.append(D[key][i])
-
-    list.sort(key=lambda x: (len(x), x), reverse=True)
-
-    return list
+                W.append(D[key][i])
+                
+    W.sort(key=lambda x: (len(x), x), reverse=True)
+    
+    return W
+                
 
 # D = {4: ["a", "b", "c", "de", "fgh"], 2: ["a", "z", "b", "w"], 0: ["a", "b"]}
 # print(func2(D)) # ['fgh', 'de', 'z', 'w', 'c', 'b', 'b', 'a', 'a']
@@ -126,20 +135,22 @@ a_list = ["monkey", "cat", "panda", "alligator"]
 expected = [4, 2, 2, 1]
 '''
 def func3(strList: list[str]) -> list[int]:
-    vocali = ["a", "e", "i", "o", "u"]
-    count = []
     
-    for element in strList:
-        rcount = 0
+    vowels = "aeiou"
+    link = []
+    for i in range(len(strList)):
+        count = 0
+        element = strList[i]
         
         for char in element:
-            if(any(char == vocale or char == vocale.upper() for vocale in vocali)):
-                rcount += 1
-                
-        count.append(rcount)
+            if char.lower() in vowels:
+                count += 1
         
-    count = sorted(count, reverse=True)
-    return count
+        link.append(count)
+    
+    link.sort(key=lambda x: -x)
+    return link     
+                
 
 # a_list = ["monkey", "cat", "panda", "alligator"]
 # print(func3(a_list)) # [4, 2, 2, 1]
@@ -165,13 +176,19 @@ Esempio:
 
 '''
 def func4(string_list1: list[str], string_list2: list[str]) -> list[str]:
+    nlist = [element for element in string_list1 if element not in string_list2]
     
-    string_list1 = [word for word in string_list1 if word not in string_list2]
+    output = []
+    for element in nlist:
+        leng = len(set(element))
+        output.append((element, leng))
+        
+    output.sort(key=lambda x: (x[1], x[0]))
     
-    string_list1.sort(key=lambda word: (len(set(word)), word))
-    
-    return string_list1
-    
+    return [valore[0] for valore in output]
+
+
+        
         
     
                 
@@ -211,18 +228,19 @@ Esempio:
     expected = (2, 5)
 '''
 def func5(points: list[tuple[int, int]]) -> tuple[float, float]:
-    points.sort(key=lambda x: x[1], reverse=True)
-    points = points[:3]
+    points.sort(key=lambda x: -x[1])
+    ymax = [(element[0], element[1]) for element in points]
 
-    my = points[1][1]
-    my = round(my, 3)
+    point3 = ymax[:3]
+    my = ymax[1][1]
     
-    mx = [x[0] for x in points]
-    mx.sort()
-    mx = round(mx[1], 3)
-    
+    mmax = [element[0] for element in point3]
+    mmax.sort(reverse=True)
+    mmax = mmax[:3]
+    mx = mmax[1]
     
     return (mx, my)
+    
 # points = [(1, 5), (3, 2), (4, 5), (5, 1), (2, 4)]
 # print(func5(points)) # (2, 5)
 
@@ -246,22 +264,17 @@ text = 'sOtto lA panca La caPra Canta Sopra LA Panca La CaPra crepa'
 expected   = {'s': 2, 't': 3, 'l': 4, 'p': 6, 'n': 3, 'c': 6, 'r': 4}
 '''
 def func6(text: str) -> dict[str, int]:
-    vocali = ["a", "e", "i", "o", "u"]
+    vowels = "aeiou"
+    text = "".join(char for char in text if char.isalpha() and char not in vowels)
+    
+    dicto = {key: 0 for key in text if key.islower()}
     
     text = text.lower()
-    stext = set(text)
-    
-    ntext = [char for char in stext if char.isalpha() and char not in vocali]
+    for key in dicto:
+        count = text.count(key)
 
-    dict = {char: 0 for char in ntext}
-    
-    for i in range(len(text)):            
-        for key in dict:
-            if text[i] == key:
-                dict[key] += 1
-        
+        dicto[key] = count
 
-    return dict
-
+    return dicto
 #text = 'sOtto lA panca La caPra Canta Sopra LA Panca La CaPra crepa'
 #print(func6(text)) # {'s': 2, 't': 3, 'l': 4, 'p': 6, 'n': 3, 'c': 6, 'r': 4}
