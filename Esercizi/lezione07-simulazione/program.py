@@ -15,9 +15,9 @@ Il voto finale e' la somma dei punteggi dei problemi risolti.
 Attenzione! DEBUG=True nel grade.py per visualizzare la stack trace degli errori.
 """
 
-nome       = "NOME"
-cognome    = "COGNOME"
-matricola  = "MATRICOLA"
+nome       = "Federico"
+cognome    = "Donati"
+matricola  = "2306212"
 
 # ----------------------------------- EX.A ----------------------------------- #
 
@@ -45,7 +45,19 @@ e la funzione deve ritornare 5.
 """
 
 def esA(file_in: str, file_out: str) -> int:
-    pass
+    with open(file_in) as f:
+        words = f.read().split()
+        lenW = len(words)
+        
+        uniqueW = list(set(words))
+        
+        with open(file_out, "a") as f:
+            uniqueW.sort()
+            for u in uniqueW:
+                f.write(f"{u}\n")
+                
+    return lenW
+        
     # completa il codice della funzione
 
 
@@ -70,7 +82,23 @@ la funzione deve ritornare [6, 15, 24].
 """
 
 def esB(input_filename: str) -> list[int]:
-    pass
+    with open(input_filename) as f:
+        lines = f.read().splitlines()
+        
+        sum = []
+        for line in lines:
+            value = line.split()
+            
+            sumrun = 0
+            for val in value:
+                val = int(val)
+                sumrun += val
+                
+            sum.append(sumrun)
+            
+    return sum             
+                
+            
     # completa il codice della funzione
 
 
