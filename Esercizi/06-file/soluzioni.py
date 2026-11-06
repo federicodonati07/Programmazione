@@ -51,6 +51,8 @@ def search_word(filename: str, word: str) -> int:
     for character in text:
         if character.isalnum() or character.isspace():
             r += character.lower()
+    
+    print(r)
     return r.split().count(word)
 
 

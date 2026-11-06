@@ -46,24 +46,33 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 
 # Scrivere una funzione che somma i quadrati degli elementi di una lista.
 def sum_squares(elements: List[int]) -> int:
-    pass
+    quadrati = [x**2 for x in elements]
+    
+    somma = sum(quadrati)
+    return somma
 
 
 # Scrivere una funzione che ritorna il valore massimo degli elementi di una lista.
 def max_element(elements: List[int]) -> int:
-    pass
+    if not elements:
+        return []
+    
+    massimo = max(x for x in elements)
+    return massimo
+    
 
 
 # Scrivere una funzione che rimuove i duplicati da una lista.
 # Commentare sul tempo di esecuzione.
 def remove_duplicates(elements: list) -> list:
-    pass
-
+    unique = list(set(elements))
+    return unique
 
 # Scrivere una funzione che si comporta come `reverse()`.
 # Usare solo costrutti del linguaggio e non librerie.
 def reverse_list(elements: list) -> list:
-    pass
+    rev = elements[::-1]
+    return rev
 
 
 # Scrivere una funzione `flatten_list()` che prende una lista che contiene
@@ -72,26 +81,42 @@ def reverse_list(elements: list) -> list:
 # Usare la funzione `isinstance()` per determinare se un elemento è una lista.
 # Usare solo costrutti del linguaggio e non librerie.
 def flatten_list(elements: list) -> list:
-    pass
-
+    
+    res = []
+    for i in range(len(elements)):
+       
+        if isinstance(elements[i], list):
+            for e in elements[i]:
+                res.append(e)
+       
+        else:
+           res.append(elements[i])       
+           
+    return res  
+        
 
 # Scrivere una funzione che data una tupla (x, y, z)
 # restituisca la tupla (z+1, x-1, y+2)
 def tuple_ex(t: tuple) -> tuple:
-    pass
+    
+    return (t[2]+1, t[0]-1, t[1]+2)
 
 
 # Scrivere una funzione che calcola l'intersezione fra due liste.
 # Date due liste, deve restituire una nuova lista contenente solo gli
 # elementi presenti in entrambe le liste.
 def intersect(a: list, b: list) -> list:
-    pass
+    a = set(a)
+    b = set(b)
+    
+    inters = [x for x in a if x in b]
+    return inters
 
 
 # Scrivere una funzione che data una lista contenente valori >= 0, 
 # crei una nuova lista contentente soltanto gli elementi della lista 
 # originale tali che soddisfano la seguente proprietà:
-#    lista[i] > 2*media(lista[0:i])
+#    lista[i] > 2*media(lista[0:i]) valore deve essere > di 2* media (valore_0 ..... valore_i)
 # (Il primo elemento non viene quindi mai inserito)
 # Ad esempio, si consideri la lista [5, 3, 10, 0]
 #  Il primo elemento è 5. Non viene inserito
@@ -99,7 +124,20 @@ def intersect(a: list, b: list) -> list:
 #  Il terzo elemento è 10, e la media degli elementi nel range [0, 1] è 4. Poichè 10 > 4*2, l'elemento viene inserito nella nuova lista
 #  Il quarto elemento è 0, e la media degli elementi nel range [0, 2] è 6. Poichè 0 < 6*2, l'elemento non viene inserito nella nuova lista
 def remove_avg(a: list) -> list:
-    pass
+    if not a:
+        return []
+    
+    na = []
+    
+    for i in range(1, len(a)):
+        media = (sum(a[0:i]))/len(a[0:i])
+
+        if a[i] > 2*media:
+            print(a[i], " appeso")
+            na.append(a[i])
+            
+    return na
+        
 
 
 # Data una lista di interi (ciascun intero è compreso fra 0 e 99), scrivere una
@@ -110,13 +148,34 @@ def remove_avg(a: list) -> list:
 # Ad esempio, per l'input [5, 4, 1, 4], restituisce la lista [(1, 1), (4, 2), (5, 1)]
 # (ordinata in base al primo elemento perché 1 < 4 < 5)
 def frequency(a: list) -> list:
-    pass
+    print (a)
+    res = []
+    
+    seta = set(a)
+    counter = {key: 0 for key in seta}
+    
+    for elem in a:
+        for key in counter:
+            if elem == key:
+                counter[key] += 1
+         
+    for key in counter:
+        res.append((key, counter[key]))
+        
+    res.sort(key= lambda x:  x[0])
+    return res
+    
 
 
 # Scrivere una funzione che restituisce True
 # se la lista è palindroma, o False altrimenti
 def is_palindrome(a: list) -> bool:
-    pass
+    a_rev = a[::-1]
+    
+    if a == a_rev:
+        return True
+    else:
+        return False
 
 
 # Scrivere una funzione che prende in input una lista, e 
@@ -125,7 +184,23 @@ def is_palindrome(a: list) -> bool:
 # Suggerimento: fare attenzione ai valori duplicati
 # Utilizzare un solo ciclo e non utilizzare sorted/sort.
 def is_sorted(a: list) -> bool:
-    pass
+    if len(a) == 1:
+        return True
+    
+    monoton = "U"
+    
+    for i in range(1, len(a)):
+        if a[i] < a[i-1]:
+            if monoton == "C":
+                return False
+            monoton = "D"
+            
+        if a[i] > a[i-1]:
+            if monoton == "D":
+                return False
+            monoton = "C"
+    return True
+                
 
 
 # Scrivere una funzione che restituisce True se una lista di interi
@@ -136,8 +211,23 @@ def is_sorted(a: list) -> bool:
 # is_sorted implementata precedentemente.
 # Si assuma che la lista abbia almeno sempre 3 elementi.
 def is_sorted_half(a: list) -> bool:
-    pass
-
+    picco = False
+    
+    for i in range(1, len(a)-1):
+        if a[i] > a[i-1] and a[i] > a[i+1]:
+            if picco:
+                return False
+            
+            picco = True
+            
+        if a[i] < a[i-1] and a[i] < a[i+1]:
+            if picco:
+                return False
+            
+            picco = True
+            
+    return picco 
+            
 
 # Test funzioni
 check_test(sum_squares, 14, [1, 2, 3])

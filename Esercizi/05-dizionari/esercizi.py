@@ -39,13 +39,58 @@ def check_test(func: Callable, expected: Any, *args: List[Any]):
 # non alfanumerici, a parte gli spazi, e convertire le parole in minuscolo.
 # Usare la funzione `isalnum()` per testare i caratteri.
 def word_frequency(string: str) -> List[Tuple[str, int]]:
-    pass
+    liststring = [word.lower() for word in string.split()]
+    res = []
+    
+    clean = []
+    for element in liststring:
+        word = ""
+        for c in element:
+            if c.isalnum():
+                word += c
+        clean.append(word)
+        
+    counter = {key: 0 for key in clean}
+    
+    for element in clean:
+        for key in counter:
+            if key == element:
+                counter[key] += 1
+                
+    for key in counter:
+        res.append((key, counter[key]))
+        
+    res.sort(key=lambda x: (x[1], x[0]))
+    return res
+    
 
 
 # Scrivere una funzione che data una stringa di numeri interi separati da spazi,
 # ritorna la lista ordinata dei numeri interi con frequenza massima.
 def number_frequency(string: str) -> List[int]:
-    pass
+    numeri = string.split()
+    res = []
+    
+    dictn = {int(key): 0 for key in numeri}
+    
+    for element in numeri:
+        for key in dictn:
+            if int(element) == key:
+                dictn[key] += 1
+                
+    f = [dictn[key] for key in dictn]
+    massimo = max(f)
+    
+    for key in dictn:
+        if dictn[key] == massimo:
+            res.append(key)
+    
+    res.sort(key= lambda x: x)
+    return res
+    
+        
+        
+        
 
 
 # Implementare una funzionalità equivalente a `dict.update()`, che data una
@@ -53,22 +98,46 @@ def number_frequency(string: str) -> List[int]:
 # dizionari di input. Per valori, si usano i valori nei dizionari di input
 # scegliendo quelli dei dizionari con indice superiore se presenti.
 def update_dict(dictionaries: List[dict]) -> dict:
-    pass
-
+    res = {key: 0 for element in dictionaries for key in element}
+    listVal = [(key, dictionaries[i][key]) for i in range(len(dictionaries)) for key in dictionaries[i]]
+    
+    for element in listVal:
+        for key in res:
+            if element[0] == key:
+                if element[1] > res[key]:
+                    res[key] = element[1]
+            
+    return res
 
 # Implementare una funzione che prende in input una lista di dizionari e ritorna
 # un dizionario le cui chiavi sono le chiavi presenti nei due di input e come
 # valori ritorna una lista con i valori presenti nei dizionari di input.
 # Si possono usare i set.
 def merge_dict(dictionaries: List[dict]) -> dict:
-    pass
+    res = {key: [] for element in dictionaries for key in element}
+    listVal = [(key, element[key]) for element in dictionaries for key in element]
+    
+    for element in listVal:
+        for key in res:
+            if key == element[0]:
+                res[key].append(element[1])
+                
+    return res
 
 
 # Implementare una funzione che prende in input una lista di dizionari e ritorna
 # un dizionario le cui chiavi sono quelle presenti in tutti i dizionari e i cui
 # valori sono la lista di valori delle relative chiavi. Si possono usare i set.
 def intersect_dict(dictionaries: List[dict]) -> dict:
-    pass
+    res = {key: [] for i in range(len(dictionaries)-1) for key in dictionaries[i] if key in dictionaries[i+1]}
+    listVal = [(key, element[key]) for element in dictionaries for key in element]
+    
+    for element in listVal:
+        for key in res:
+            if key == element[0]:
+                res[key].append(element[1])
+    
+    return res
 
 
 # Test funzioni

@@ -41,7 +41,20 @@ def load_file(filename: str) -> str:
 # e' presente nel file. La ricerca ignora la distinzione tra maiuscole e minuscole,
 # e la punteggiatura.
 def search_word(filename: str, word: str) -> int:
-    pass
+    with open(filename) as f:
+        text = f.read()
+        r = ""
+        
+        for c in text:
+            if c.isalnum() or c.isspace():
+                r += c.lower()
+                
+        return r.split().count(word)
+                
+        
+                
+                    
+            
 
 
 # Dato il nome di un file di testo, si ritorna una "tabella" formata da una
@@ -49,8 +62,27 @@ def search_word(filename: str, word: str) -> int:
 # (chiavi nel dizionario) e le righe contengono i valori, tutti separati da
 # spazi.
 def load_table(filename: str) -> List[Dict[str, str]]:
-    pass
+    res = []
+    
+    with open(filename) as f:
+        splitted = f.read().splitlines()
 
+        keys = splitted[0].split()
+        
+        for line in splitted[1:]:
+            value = line.split()
+            d = {keys[i]: value[i] for i in range(len(keys))}
+            
+            res.append(d)
+    return res
+            
+            
+            
+        
+            
+                
+
+        
 
 # Caricare una tabella in modo simile al precente. In questo caso però, i valori
 # che rappresentano numeri interi vanno convertiti in interi e non lasciati come
