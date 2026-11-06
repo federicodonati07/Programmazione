@@ -1,0 +1,4 @@
+Rossi	Mario	28	2001
+bianchi Luca  30 1999
+Verdi Anna 28   2000
+Rossi Anna 28 2001

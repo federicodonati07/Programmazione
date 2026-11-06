@@ -1,0 +1,6 @@
+re 1
+mi 2
+fa 3
+sol2 5
+sol
+la si do

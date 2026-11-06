@@ -1,0 +1,5 @@
+sol2 9
+fa 0
+fa2 4
+re 8
+mi		7

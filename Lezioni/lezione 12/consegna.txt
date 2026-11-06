@@ -1,0 +1,29 @@
+Si progetti una funzione classifica(path) che riceve come argomento il path di un file di testo. Ogni riga del file contiene quattro campi separati da spazi e/o tab, nell’ordine:
+
+cognome nome punteggio anno_nascita
+
+La funzione deve:
+
+- ritornare una lista di tuple (cognome, nome, punteggio, anno_nascita), con i punteggi convertiti in int;
+- ordinare la lista secondo i seguenti criteri, in ordine di priorità:
+  - punteggio decrescente;
+  - a parità di punteggio, cognome in ordine alfabetico (senza distinzione tra maiuscole e minuscole);
+  - a parità di cognome, nome in ordine alfabetico (senza distinzione tra maiuscole e minuscole);
+  - a parità di anche il nome, anno di nascita crescente.
+
+Esempio: se il file studenti.txt contiene
+
+Rossi	Mario	28	2001
+bianchi Luca  30 1999
+Verdi Anna 28   2000
+Rossi Anna 28 2001
+
+la funzione deve ritornare
+
+python
+[
+    ('bianchi', 'Luca', 30, 1999),
+    ('Rossi', 'Anna', 28, 2001),
+    ('Rossi', 'Mario', 28, 2001),
+    ('Verdi', 'Anna', 28, 2000),
+]
