@@ -18,9 +18,9 @@ I/le ragazzi/e con DSA devono raggiungere almeno 15
 Attenzione! DEBUG=True nel grade.py per visualizzare la stack trace degli errori.
 """
 
-nome       = "NOME"
-cognome    = "COGNOME"
-matricola  = "MATRICOLA"
+nome       = "Federico"
+cognome    = "Donati"
+matricola  = "2306212"
 
 # ----------------------------------- EX.1 ----------------------------------- #
 
@@ -48,7 +48,43 @@ Es: se dai due file dict1 e dict2 sono generati i dizionari
     la funzione deve ritornare il dizionario {'a':'bue/cane'}.
 """
 def func1 (dict1, dict2):
-    pass
+    res  = {}
+    with open(dict1) as f:
+        file1 = f.read()
+    with open(dict2) as f:
+        file2 = f.read()
+        
+        
+    lines1 = file1.splitlines()
+    lines2 = file2.splitlines()
+    
+    f1 = {}
+    f2 = {}
+    for element in lines1:
+        value = element.split()
+        
+        if len(value) == 2:
+            f1[value[0]] = value[1]
+        
+    for element in lines2:
+        value = element.split()
+        
+        if len(value) == 2:
+            f2[value[0]] = value[1]
+        
+    for key in f1:
+            if key in f2:
+                res[key] = f1[key]
+    
+    for key in res:
+        for key2 in f2:
+            if key == key2:
+                listV = [res[key], f2[key2]]
+                listV.sort(key=lambda x: x)
+                
+                res[key] = f"{listV[0]}/{listV[1]}"
+        
+    return res
     # completa il codice della funzione
 
 
@@ -81,7 +117,34 @@ Si apra 'func2/input_1.txt' per vedere l'input e
 """
 
 def func2(input_file, output_file):
-    pass
+    with open(input_file) as f:
+        lines = f.read().splitlines()
+        
+        tuplist = []
+        counter = 0
+        for element in lines:
+            vallist = []
+            values = element.split(";")
+            
+            for val in values:
+                counter += 1
+                vallist.append(val.strip())
+                
+            tuplist.append(tuple(vallist))
+
+    with open(output_file, "a") as f:
+        for element in tuplist:
+            f.write("(")
+            for i in range(len(element)):
+                if i == len(element)-1:
+                    f.write(element[i])
+                else:
+                    f.write(f"{element[i]}, ")
+                    
+            f.write(")\n")
+    
+    return counter
+                
     # completa il codice della funzione
 
 
@@ -110,7 +173,31 @@ Esempio: func3('func3/in_01.txt', 'func3/out_01.txt', 4, 'ou')
 """
 
 def func3(file_in : str, file_out: str, length:int, chars:str) -> list[str]:
-    pass
+    with open(file_in) as f:
+        words = f.read().split()
+        
+        
+        res = []
+        for word in words:
+            if len(word) <= length:
+                if not any(c in word for c in chars):
+                    res.append(word)
+              
+        res.sort(key=lambda elem: (len(elem), elem))
+        
+        with open(file_out, "a") as f:
+            for i in range(len(res)):
+                if i == len(res)-1:
+                    f.write(res[i])
+                
+                else:
+                    f.write(f"{res[i]} ")
+            
+        with open(file_out) as f:
+            print(f.read())
+          
+        return res
+
     # completa il codice della funzione
 
 
@@ -142,7 +229,30 @@ e tornare il valore 6
 '''
 
 def func4(textfile_in, textfile_out):
-    pass
+    with open(textfile_in) as f:
+        nums = f.read().split()
+        
+        res = []
+        counter = 0
+        for num in nums:
+            counter += 1
+            
+            if float(num) -  int(float(num)) != 0:
+                res.append(float(num))
+            else:
+                res.append(int(num))
+            
+        res.sort(key=lambda elem: ((-elem) if elem < 0 else (elem), -elem))
+        
+        with open(textfile_out, "a") as f:
+            res = [str(elem) for elem in res]
+            for i in range(len(res)):
+                if i == len(res)-1:
+                    f.write(res[i])
+                else:
+                    f.write(f"{res[i]}, ")
+        
+        return counter
     # completa il codice della funzione
 
 
