@@ -280,7 +280,50 @@ come lista di liste
  [6, 3]]
 '''
 def func5(input_filename):
-    pass
+    with open(input_filename) as f:
+        res = []
+        
+        lines = f.read().splitlines()
+        
+        single = []
+        if len(lines) <= 1:
+            for i in range(len(lines)):
+                val = lines[i].split()
+                for v in range(len(val)):
+                    single.append([int(val[v])])
+
+            return single
+        
+        valLines = []
+        for i in range(len(lines)):
+            val = lines[i].split()
+            print(f" VAL: {val}")
+            valLines.append([])
+            
+            for v in val:
+                if len(lines) > 1:
+                    valLines[i].append(v)
+                
+        ninetydeg = {key: [] for key in range(len(valLines[0]))}
+        
+        
+        for i in range(len(valLines)):
+            for j in range(len(valLines[i])):
+                for key in ninetydeg:
+                    if j == key:
+                        ninetydeg[key].append(int(valLines[i][j]))
+                        
+                        
+        for key in ninetydeg:
+           ninetydeg[key] =  ninetydeg[key][::-1]
+        
+        for key in ninetydeg:
+            if  len(ninetydeg[key]) > 0:
+                res.append(ninetydeg[key])
+        
+        return res
+            
+            
     # completa il codice della funzione
 
 
